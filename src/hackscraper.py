@@ -1,6 +1,6 @@
 #!/usr/bin/python
 import mechanicalsoup
-from BeautifulSoup import BeautifulSoup as soup
+from bs4 import BeautifulSoup as soup
 
 browser = mechanicalsoup.Browser()
 
@@ -9,15 +9,12 @@ def populate_pagelist(page):
 	how do i docstrings good?
 	takes a page and then gives you an int list of the pages containing data we need to scrape aw yeah
 	'''
+	the_div = page.soup.find('div', class_='pagination') #finds the div that has the links with data we want
+	links = the_div.findAll('a') #gets the links
+	links = [int(link.string) for link in links if link.string is not None] #extracts the number from them, one of them is None so we do the is not None
+	return links #yatta
 
-	the_div = soup(page.soup.find('div', class_='pagination'))
-#	links = the_div.soup.find_all('a')
-	print(the_div)
-	#pagination is the classname of stuff
-
-	return range(10)#this is temporary
-
-def populate_hackathonlist(pdagedata):
+def scrape_hackathon(pdagedata):
 	'''
 	takes a page and then scrapes all the hackathons from it and then puts them into a list or dictionary or something
 	its gonna be awesome
@@ -37,7 +34,9 @@ current_page = browser.get(current_url)
 
 pages = populate_pagelist(current_page) #gvn is an acronum for good variable name #todo(aaron) make up a better one
 
+hackathons = []
 for page in pages:
 	current_url = "{}{}".format(base_url,page)
+	hackathons.append(scrape_hackathon(page))
 	#get the page
 	#scrape it good
