@@ -1,6 +1,6 @@
 #!/usr/bin/python
 import mechanicalsoup
-from bs4 import BeautifulSoup as soup
+from bs4 import BeautifulSoup as soup #might actually not need this
 
 browser = mechanicalsoup.Browser()
 
@@ -23,6 +23,8 @@ def scrape_hackathon(page):
 	#im gonna celebrate my accomplishments for a bit (until after I've eaten dinner)
 	#this is the hard part though :(
 	#but i'm coding something useful that someone else will probably use :)
+
+	#so classnames with "large-9 columns" have the data that i need
 	pass
 
 
@@ -44,3 +46,5 @@ for page in pages:
 	hackathons.append(scrape_hackathon(page))
 	#get the page
 	#scrape it good
+
+#write the data to a JSON file? how the heck does JSON work
