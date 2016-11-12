@@ -14,11 +14,15 @@ def populate_pagelist(page):
 	links = [int(link.string) for link in links if link.string is not None] #extracts the number from them, one of them is None so we do the is not None
 	return links #yatta
 
-def scrape_hackathon(pdagedata):
+def scrape_hackathon(page):
 	'''
 	takes a page and then scrapes all the hackathons from it and then puts them into a list or dictionary or something
 	its gonna be awesome
 	'''
+	#in theory this module works if this function is implemented.
+	#im gonna celebrate my accomplishments for a bit (until after I've eaten dinner)
+	#this is the hard part though :(
+	#but i'm coding something useful that someone else will probably use :)
 	pass
 
 
