@@ -9,7 +9,8 @@ also make good docstrings because idk how to do that
 """
 import mechanicalsoup
 import copy
-from bs4 import BeautifulSoup as soup #might actually not need this
+import json
+#from bs4 import BeautifulSoup as soup #might actually not need this
 
 browser = mechanicalsoup.Browser()
 
@@ -53,11 +54,13 @@ def scrape_hackathons(page):
 		for tag in hackathon_tags:#i will be the first to admit that this is not a particularly fast algorithm
 									#if you make pull request with a faster one I will craciously accept it
 			if " ".join(tag['class']) == 'title':
-				current_hackathon['name'] = tag.string.strip()
+				name = tag.string.strip()
+				current_hackathon['name'] = name
 				print(current_hackathon['name'])
 
 			elif " ".join(tag['class']) == 'challenge-location':
-				current_hackathon['location'] = tag.contents[2].strip()
+				location = tag.contents[2].strip()
+				current_hackathon['location'] = location
 				print(str(current_hackathon['location']))
 
 			elif " ".join(tag['class']) == "value date-range":
@@ -70,15 +73,21 @@ def scrape_hackathons(page):
 				print(current_hackathon['date'])
 
 			elif " ".join(tag['class']) == "challenge-description":
-				current_hackathon['desc'] = tag.string.strip()
+				desc = tag.string.strip()
+				desc = desc.replace("________________________________________________","")
+				#this line is bad and hardcoded crap
+				#@todo(aaron) use regex to make a good thing "__+" <- that's the regex
+				if desc == '':
+					desc = "ERROR_PARSING_DESCRIPTION"
+				current_hackathon['desc'] = desc
 				print(current_hackathon['desc'])
 
 			elif " ".join(tag['class']) == "thumbnail_image image-replacement":
-				current_hackathon['logo'] = "{}".format(tag['src'].replace("//","").replace("https:",""))
+				logo = "{}".format(tag['src'].replace("//","").replace("https:",""))
+				current_hackathon['logo'] = logo
 				print(current_hackathon['logo'])
 		print()
 		hackathons.append(current_hackathon)
-
 	return hackathons
 
 
@@ -93,7 +102,6 @@ current_page = browser.get(current_url)
 #populate a list of pages
 
 pageids = populate_pagelist(current_page) #gvn is an acronum for good variable name #todo(aaron) make up a better one
-
 hackathons = []
 for pageid in pageids:
 	current_url = "{}{}".format(base_url,pageid)
@@ -102,5 +110,6 @@ for pageid in pageids:
 		hackathons.append(hackathon)
 	#get the page
 	#scrape it good
-
-#write the data to a JSON file? how the heck does JSON work
+f = open('hackathons.JSON', 'w')
+f.write(json.dumps(hackathons, sort_keys=True, indent=4))
+f.close
