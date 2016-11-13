@@ -90,7 +90,7 @@ def scrape_hackathons(page):
 		hackathons.append(current_hackathon)
 	return hackathons
 
-def scrape():
+def scrape(returnjson = False):
 	base_url = "https://devpost.com/hackathons?utf8=✓&search=&challenge_type=in-person&sort_by=Submission+Deadline&page="
 	maxpage = 9001 #this script will break if there are over nine thousand pages of hackathons
 
@@ -110,6 +110,11 @@ def scrape():
 			hackathons.append(hackathon)
 		#get the page
 		#scrape it good
+	if returnjson:
+		return json.dumps(hackathons, sort_keys=True, indent=4)
+	return hackathons
+
+def jsondump():
 	f = open('hackathons.JSON', 'w')
-	f.write(json.dumps(hackathons, sort_keys=True, indent=4))
+	f.write(json.dumps(scrape(), sort_keys=True, indent=4))
 	f.close
