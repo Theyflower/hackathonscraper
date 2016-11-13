@@ -1,3 +1,4 @@
 src/aaron_testing.py
 src/example
 src/_pycache__/*
+*.JSON
