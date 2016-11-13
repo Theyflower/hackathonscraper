@@ -24,7 +24,7 @@ def scrape_hackathon(page):
 	#this is the hard part though :(
 	#but i'm coding something useful that someone else will probably use :)
 
-	#so classnames with "large-9 columns" have the data that i need
+	#so classnames with "challenge-listing " have the data that i need
 	pass
 
 
