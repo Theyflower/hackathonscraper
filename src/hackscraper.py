@@ -90,26 +90,26 @@ def scrape_hackathons(page):
 		hackathons.append(current_hackathon)
 	return hackathons
 
+def scrape():
+	base_url = "https://devpost.com/hackathons?utf8=✓&search=&challenge_type=in-person&sort_by=Submission+Deadline&page="
+	maxpage = 9001 #this script will break if there are over nine thousand pages of hackathons
 
-base_url = "https://devpost.com/hackathons?utf8=✓&search=&challenge_type=in-person&sort_by=Submission+Deadline&page="
-maxpage = 9001 #this script will break if there are over nine thousand pages of hackathons
+	#make sure maxpage is higher than the amount of pages there actually are
+	 
+	current_url = "{}{}".format(base_url,maxpage) #classname pagination has the page 
+	current_page = browser.get(current_url)
 
-#make sure maxpage is higher than the amount of pages there actually are
- 
-current_url = "{}{}".format(base_url,maxpage) #classname pagination has the page 
-current_page = browser.get(current_url)
+	#populate a list of pages
 
-#populate a list of pages
-
-pageids = populate_pagelist(current_page) #gvn is an acronum for good variable name #todo(aaron) make up a better one
-hackathons = []
-for pageid in pageids:
-	current_url = "{}{}".format(base_url,pageid)
-	page = browser.get(current_url)
-	for hackathon in scrape_hackathons(page):
-		hackathons.append(hackathon)
-	#get the page
-	#scrape it good
-f = open('hackathons.JSON', 'w')
-f.write(json.dumps(hackathons, sort_keys=True, indent=4))
-f.close
+	pageids = populate_pagelist(current_page) #gvn is an acronum for good variable name #todo(aaron) make up a better one
+	hackathons = []
+	for pageid in pageids:
+		current_url = "{}{}".format(base_url,pageid)
+		page = browser.get(current_url)
+		for hackathon in scrape_hackathons(page):
+			hackathons.append(hackathon)
+		#get the page
+		#scrape it good
+	f = open('hackathons.JSON', 'w')
+	f.write(json.dumps(hackathons, sort_keys=True, indent=4))
+	f.close
