@@ -8,6 +8,7 @@ please fork this repo and make a pull request with refactored code
 also make good docstrings because idk how to do that
 """
 import mechanicalsoup
+import copy
 from bs4 import BeautifulSoup as soup #might actually not need this
 
 browser = mechanicalsoup.Browser()
@@ -39,7 +40,7 @@ def scrape_hackathons(page):
 	hackathon_data = []
 	for tag in tags:
 		if tag['class'] == ZERO_CLASS:
-			if 'curr_hackathon' in locals():
+			if 'current_hackathon' in locals():
 				hackathon_data.append(current_hackathon)
 			current_hackathon = []
 		current_hackathon.append(tag)
@@ -47,12 +48,38 @@ def scrape_hackathons(page):
 	#yeah so the variable current_hackathon is going to be repurposed
 	#if you have good ideas for better variable names please refactor my code
 	#i will accept pull requests that improve variable names
-
 	for hackathon_tags in hackathon_data:
-		current_hackathon = deepcopy(hackathon_template)
-		print(hackathon_tags)
+		current_hackathon = copy.deepcopy(hackathon_template)
+		for tag in hackathon_tags:#i will be the first to admit that this is not a particularly fast algorithm
+									#if you make pull request with a faster one I will craciously accept it
+			if " ".join(tag['class']) == 'title':
+				current_hackathon['name'] = tag.string.strip()
+				print(current_hackathon['name'])
 
-	return range(10) #this is temporary
+			elif " ".join(tag['class']) == 'challenge-location':
+				current_hackathon['location'] = tag.contents[2].strip()
+				print(str(current_hackathon['location']))
+
+			elif " ".join(tag['class']) == "value date-range":
+				date = tag.string.strip()
+				if '–' in date:
+					date = [i.strip() for i in date.split('–')]
+				else:
+					date = [date, "NO_END_DATE"]
+				current_hackathon['date'] = date
+				print(current_hackathon['date'])
+
+			elif " ".join(tag['class']) == "challenge-description":
+				current_hackathon['desc'] = tag.string.strip()
+				print(current_hackathon['desc'])
+
+			elif " ".join(tag['class']) == "thumbnail_image image-replacement":
+				current_hackathon['logo'] = "{}".format(tag['src'].replace("//","").replace("https:",""))
+				print(current_hackathon['logo'])
+		print()
+		hackathons.append(current_hackathon)
+
+	return hackathons
 
 
 base_url = "https://devpost.com/hackathons?utf8=✓&search=&challenge_type=in-person&sort_by=Submission+Deadline&page="
