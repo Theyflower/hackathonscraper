@@ -1,4 +1,5 @@
 #!/usr/bin/python
+# coding=UTF-8
 """
 congratulations, you are reading my code
 there are a LOT of REALLY BADly named variables
