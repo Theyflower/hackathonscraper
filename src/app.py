@@ -1,4 +1,4 @@
-#!/usr/bin/python	
+#!/usr/bin/env python3	
 from flask import Flask, render_template, jsonify
 import hackscraper
 # from flask_restful import Resource, Api #i should use this

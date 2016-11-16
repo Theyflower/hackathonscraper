@@ -1,3 +1,3 @@
-#!/usr/bin/bash
+#!/usr/bin/sh
 export FLASK_APP=app.py
-python -m flask run
+python3 -m flask run
