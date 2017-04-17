@@ -10,6 +10,6 @@ def index():
 
 @app.route('/api')
 def api():
-	return render_template('api.html', data=hackscraper.scrape(returnjson=True))
+	return hackscraper.scrape()
 app.add_url_rule('/api', 'api', api)
 app.add_url_rule('/', 'index', index)
