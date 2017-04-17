@@ -56,12 +56,10 @@ def scrape_hackathons(page):
 			if " ".join(tag['class']) == 'title':
 				name = tag.string.strip()
 				current_hackathon['name'] = name
-				print(current_hackathon['name'])
 
 			elif " ".join(tag['class']) == 'challenge-location':
 				location = tag.contents[2].strip()
 				current_hackathon['location'] = location
-				print(str(current_hackathon['location']))
 
 			elif " ".join(tag['class']) == "value date-range":
 				date = tag.string.strip()
@@ -70,7 +68,6 @@ def scrape_hackathons(page):
 				else:
 					date = [date, "NO_END_DATE"]
 				current_hackathon['date'] = date
-				print(current_hackathon['date'])
 
 			elif " ".join(tag['class']) == "challenge-description":
 				desc = tag.string.strip()
@@ -80,13 +77,11 @@ def scrape_hackathons(page):
 				if desc == '':
 					desc = "ERROR_PARSING_DESCRIPTION"
 				current_hackathon['desc'] = desc
-				print(current_hackathon['desc'])
 
 			elif " ".join(tag['class']) == "thumbnail_image image-replacement":
 				logo = "{}".format(tag['src'].replace("//","").replace("https:",""))
 				current_hackathon['logo'] = logo
-				print(current_hackathon['logo'])
-		print()
+
 		hackathons.append(current_hackathon)
 	return hackathons
 
